@@ -24,11 +24,11 @@ namespace ReadteR
         public string pinCode;
 
         public IAuthenticationContext authenticationContext { get; private set; }
+        public ITwitterCredentials userCredentials;
 
         public LoginForm()
         {
             InitializeComponent();
-
             // Create a new set of credentials for the application.
             var appCredentials = new TwitterCredentials(CONSUMER_KEY, CONSUMER_SECRET);
 
@@ -49,12 +49,14 @@ namespace ReadteR
             pinCode = PINBox.Text;
 
             // With this pin code it is now possible to get the credentials back from Twitter                
-            var userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(pinCode, authenticationContext);
+            userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(pinCode, authenticationContext);
 
             // Use the user credentials in your application
             Auth.SetCredentials(userCredentials);
 
-            Close();
+           // Hide();
+            GeneralWindow nextWindow = new GeneralWindow(userCredentials);
+            nextWindow.Show();
         }
 
     }
