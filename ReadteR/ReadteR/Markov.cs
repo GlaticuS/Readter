@@ -44,6 +44,7 @@ namespace ReadteR
                     //Array.Clear(s, Array.IndexOf(s, piece, 1), 1);
                 }
             }
+            Console.WriteLine("all string: {0}\n", s);
             string s1 = "";
             bool NextisStart = false;
             for (int i = 0; i < s.Length; i++)
@@ -51,6 +52,7 @@ namespace ReadteR
                 if (s[i] == "")
                     continue;
                 s1 = s[i].ToLower();
+                Console.WriteLine("s1 = {0}\n", s1);
                 w = new Structs.RootWord();
                 c = new Structs.Child();
                 if (Words.ContainsKey(s1))
@@ -81,6 +83,7 @@ namespace ReadteR
 
                         Words.Remove(s1);
                         Words.Add(s1, w);
+                        Console.WriteLine("w_old = {0}\n", w.Word);
                     }
                 }
                 else
@@ -114,15 +117,17 @@ namespace ReadteR
                         startindex.Add(s1);
                     }
                     Words.Add(s1, w);
+                    Console.WriteLine("w_new = {0}\n", w.Word);
                 }
             }
         }
         public string Output()
         {
             string output = "";
-            Random r = new Random(Environment.TickCount + startindex.Count);
+            Random r = new Random(Environment.TickCount + startindex.Count + 1);
             Structs.RootWord w = (Structs.RootWord)Words[((string)startindex[r.Next(startindex.Count)]).ToLower()];
             output = w.Word + " ";
+            Console.WriteLine("output = {0}\n", output);
             Structs.Child c = new Structs.Child();
             ArrayList a = new ArrayList();
             int pos = 0;
@@ -133,18 +138,25 @@ namespace ReadteR
                 pos = 0;
                 foreach (object x in w.Childs)
                 {
-                    c = (Structs.Child)w.Childs[((System.Collections.DictionaryEntry)x).Key];
+                    c = (Structs.Child)w.Childs[((DictionaryEntry)x).Key];
                     min = pos;
                     pos += c.Occurrence; //bigger slice for more occurrences
                     max = pos;
                     if (min <= rnd & max >= rnd)
                     {
                         output += c.Word + " ";
-                        w = (Structs.RootWord)Words[c.Word.ToLower()];
+                        if(c.Word != null)
+                        {
+                            w = (Structs.RootWord)Words[c.Word.ToLower()];
+                            Console.WriteLine("w_end = {0}\n", w.Word);
+                        }
+
                         break;
                     }
                 }
             } while (!w.End);
+
+            Console.WriteLine("output_end = {0}\n", output);
             return output;
         }
     }

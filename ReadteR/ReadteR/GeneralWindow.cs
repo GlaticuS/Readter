@@ -32,7 +32,13 @@ namespace ReadteR
         public string homeTimeLine = "";
         public GeneralWindow(ITwitterCredentials userCredentials)
         {
-            authenticatedUser = User.GetAuthenticatedUser(userCredentials);
+            if (userCredentials != null)
+            {
+                authenticatedUser = User.GetAuthenticatedUser(userCredentials);
+            }
+            else
+                Close();
+            
             //спроектировать заполнение формы !!!!!
             InitializeComponent();
             userName.Text = authenticatedUser.ScreenName;

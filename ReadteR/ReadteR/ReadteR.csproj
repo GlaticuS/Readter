@@ -97,6 +97,7 @@
     <Compile Include="Markov.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Secret.cs" />
     <EmbeddedResource Include="GeneralWindow.resx">
       <DependentUpon>GeneralWindow.cs</DependentUpon>
     </EmbeddedResource>
