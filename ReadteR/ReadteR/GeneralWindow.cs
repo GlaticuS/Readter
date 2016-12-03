@@ -39,19 +39,30 @@ namespace ReadteR
             else
                 Close();
             
-            //спроектировать заполнение формы !!!!!
             InitializeComponent();
             userName.Text = authenticatedUser.ScreenName;
 
+              EventArgs e = null;
             //заполнить формы лентой пользователя и профилем пользователя
-            getTimelines();
+            //var tweet = Tweet.PublishTweet("Hello!");
+            getTimelines(this, e);
+
+            Timer1.Interval = 30000;
+            Timer1.Enabled = true;
+            Timer1.Tick += new EventHandler(getTimelines);
+           
         }
 
-        private void getTimelines()
+        private void getTimelines(object sender, EventArgs e)
         {
             var newsTweets = Timeline.GetHomeTimeline();
             var userTweets = Timeline.GetUserTimeline(authenticatedUser);
-            
+
+            if (newsBox.Text != null)
+                newsBox.Clear();
+
+            if (tweetBox.Text != null)
+                tweetBox.Clear();
             /*
              * Вся лента пользователя. Тут же производится и сбор текста для последующей его "очистки"
              * и генерации твита.
@@ -60,6 +71,7 @@ namespace ReadteR
             {
                 if(!tweet.IsRetweet)        //Не обрабатываем ретвиты
                 {
+ 
                     newsBox.AppendText(tweet.Text + "\n\n");
                    // Console.WriteLine(tweet.Text + "\n");
                     homeTimeLine += tweet.Text + "\n";
@@ -69,7 +81,9 @@ namespace ReadteR
             foreach (var tweet in userTweets)       //Просто отображение твитов пользователя
             {
                 if (!tweet.IsRetweet)
+                {
                     tweetBox.AppendText(tweet.Text + "\n\n");
+                }          
             }
             //Console.WriteLine(homeTimeLine);
         }

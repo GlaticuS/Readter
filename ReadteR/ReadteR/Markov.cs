@@ -44,7 +44,10 @@ namespace ReadteR
                     //Array.Clear(s, Array.IndexOf(s, piece, 1), 1);
                 }
             }
-            Console.WriteLine("all string: {0}\n", s);
+
+           // for(int i = 0; i < s.Length; i++)
+           //     Console.WriteLine("all string: {0}\n", s[i]);
+
             string s1 = "";
             bool NextisStart = false;
             for (int i = 0; i < s.Length; i++)
@@ -52,7 +55,7 @@ namespace ReadteR
                 if (s[i] == "")
                     continue;
                 s1 = s[i].ToLower();
-                Console.WriteLine("s1 = {0}\n", s1);
+               // Console.WriteLine("s1 = {0}\n", s1);
                 w = new Structs.RootWord();
                 c = new Structs.Child();
                 if (Words.ContainsKey(s1))
@@ -83,7 +86,7 @@ namespace ReadteR
 
                         Words.Remove(s1);
                         Words.Add(s1, w);
-                        Console.WriteLine("w_old = {0}\n", w.Word);
+                        //Console.WriteLine("w_old = {0}\n", w.Word);
                     }
                 }
                 else
@@ -117,7 +120,7 @@ namespace ReadteR
                         startindex.Add(s1);
                     }
                     Words.Add(s1, w);
-                    Console.WriteLine("w_new = {0}\n", w.Word);
+                   // Console.WriteLine("w_new = {0}\n", w.Word);
                 }
             }
         }
@@ -127,7 +130,7 @@ namespace ReadteR
             Random r = new Random(Environment.TickCount + startindex.Count + 1);
             Structs.RootWord w = (Structs.RootWord)Words[((string)startindex[r.Next(startindex.Count)]).ToLower()];
             output = w.Word + " ";
-            Console.WriteLine("output = {0}\n", output);
+            //Console.WriteLine("output = {0}\n", output);
             Structs.Child c = new Structs.Child();
             ArrayList a = new ArrayList();
             int pos = 0;
@@ -145,15 +148,17 @@ namespace ReadteR
                     if (min <= rnd & max >= rnd)
                     {
                         output += c.Word + " ";
-                        if(c.Word != null)
+                        if(c.Word != null && Words[c.Word.ToLower()] != null)
                         {
                             w = (Structs.RootWord)Words[c.Word.ToLower()];
-                            Console.WriteLine("w_end = {0}\n", w.Word);
+                            //Console.WriteLine("w_end = {0}\n", w.Word);
                         }
-
+                                 
                         break;
                     }
                 }
+                if (output.Length > 140)
+                    break;
             } while (!w.End);
 
             Console.WriteLine("output_end = {0}\n", output);

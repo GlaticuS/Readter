@@ -28,20 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.userName = new System.Windows.Forms.Label();
             this.news = new System.Windows.Forms.Label();
             this.generationPanel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tweetBox = new System.Windows.Forms.RichTextBox();
             this.newsBox = new System.Windows.Forms.RichTextBox();
+            this.tweetBox = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.generationBox = new System.Windows.Forms.RichTextBox();
             this.tweetButton = new System.Windows.Forms.Button();
             this.generateButton = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // userName
@@ -68,7 +70,7 @@
             // 
             this.generationPanel.AutoSize = true;
             this.generationPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.generationPanel.Location = new System.Drawing.Point(597, 0);
+            this.generationPanel.Location = new System.Drawing.Point(596, 0);
             this.generationPanel.Name = "generationPanel";
             this.generationPanel.Size = new System.Drawing.Size(272, 31);
             this.generationPanel.TabIndex = 5;
@@ -90,21 +92,14 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(887, 403);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
-            // tableLayoutPanel2
+            // newsBox
             // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.40577F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.59423F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 289F));
-            this.tableLayoutPanel2.Controls.Add(this.news, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.userName, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.generationPanel, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(15, 8);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(884, 39);
-            this.tableLayoutPanel2.TabIndex = 7;
+            this.newsBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.newsBox.Location = new System.Drawing.Point(298, 3);
+            this.newsBox.Name = "newsBox";
+            this.newsBox.Size = new System.Drawing.Size(286, 397);
+            this.newsBox.TabIndex = 9;
+            this.newsBox.Text = "";
             // 
             // tweetBox
             // 
@@ -114,15 +109,6 @@
             this.tweetBox.Size = new System.Drawing.Size(286, 397);
             this.tweetBox.TabIndex = 8;
             this.tweetBox.Text = "";
-            // 
-            // newsBox
-            // 
-            this.newsBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.newsBox.Location = new System.Drawing.Point(298, 3);
-            this.newsBox.Name = "newsBox";
-            this.newsBox.Size = new System.Drawing.Size(286, 397);
-            this.newsBox.TabIndex = 9;
-            this.newsBox.Text = "";
             // 
             // tableLayoutPanel3
             // 
@@ -170,6 +156,22 @@
             this.generateButton.UseVisualStyleBackColor = true;
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.40577F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.59423F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
+            this.tableLayoutPanel2.Controls.Add(this.news, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.userName, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.generationPanel, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(15, 8);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(884, 39);
+            this.tableLayoutPanel2.TabIndex = 7;
+            // 
             // GeneralWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,9 +182,9 @@
             this.Name = "GeneralWindow";
             this.Text = "Form1";
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -199,5 +201,6 @@
         private System.Windows.Forms.RichTextBox generationBox;
         private System.Windows.Forms.Button tweetButton;
         private System.Windows.Forms.Button generateButton;
+        private System.Windows.Forms.Timer Timer1;
     }
 }
