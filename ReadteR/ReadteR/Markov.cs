@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace ReadteR
 {
+    /// <summary>
+    /// Класс структур, которые будут использоваться для создания текста с помощью Марковской цепи.
+    /// </summary>
     public class Structs
     {
+        /// <summary>
+        /// Структура корневого дерева, с узлами начала/конца, количеством детей и хеш-таблицей детей.
+        /// </summary>
         public struct RootWord
         {
             public bool Start;
@@ -17,16 +21,63 @@ namespace ReadteR
             public int ChildCount;
             public Hashtable Childs;
         }
+
+        /// <summary>
+        /// Хеш-таблица слов, содержащая в качестве ключа - слово, а в качестве значения - частоту его появления.
+        /// </summary>
         public struct Child
         {
             public int Occurrence;
             public string Word;
         }
     }
+
+    /// <summary>
+    /// Класс, реализующий алгоритм марковской цепи.
+    /// </summary>
     public class MarkovChain
     {
+        /// <summary>
+        ///     Функция, возводящая в верхний регистр первую букву строки. Это сделано для того, чтобы сгенерированные
+        ///     твиты были более удобочитаемыми.
+        /// </summary>
+        /// <param name="str">Строка сгенерированного текста.</param>
+        /// <returns>Возвращаемое значение - строка, где первый символ находится в верхнем регистре.</returns>
+        public string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
+        }
+
         ArrayList startindex = new ArrayList();
+        /// <summary>
+        /// Объявляем хеш-таблицу слов.
+        /// </summary>
         public Hashtable Words = new Hashtable(1024, .1f);
+
+        /// <summary>
+        ///     Функция заполнения хеш-таблицы.
+        ///     <para>
+        ///         На вход подается исходная строка текста, из которого впоследствии будет сгенерирован новый.
+        ///         Сначала строка очищается от символов переноса строки, табуляции, лишних пробелов и делится на слова,
+        ///         разделитель - пробел.
+        ///         Затем удаляются ссылки на медиа-контент и не-ascii символы, чтобы избежать засорения будущего текста 
+        ///         ненужными символами и ссылками, которые портят смысл строки.
+        ///     </para>
+        ///     <para>
+        ///         После получения массива слов, они начинают сортироваться - создается ли новый элемент в хеш-таблице, 
+        ///         или же значение при определенном ключе увеличивается на один, если слово уже встречалось.
+        ///     </para>
+        ///     <para>
+        ///         При добавлении следующего слова ориентируемся только на значение настоящего слова, предыдущие не рассматриваем.
+        ///     </para>
+        /// </summary>
+        /// <param name="Input">Строка, на основе которой будет осуществляться заполнение таблиц.</param>
         public void Load(string Input)
         {
             startindex = new ArrayList();
@@ -41,8 +92,9 @@ namespace ReadteR
                     var tmp = new List<string>(s); // Преобразование в список
                     tmp.Remove(piece); // Удаление элемента
                     s = tmp.ToArray(); // Преобразование в массив
-                    //Array.Clear(s, Array.IndexOf(s, piece, 1), 1);
                 }
+
+                Regex.Replace(piece, @"[^\u0000-\u007F]+", string.Empty);
             }
 
            // for(int i = 0; i < s.Length; i++)
@@ -124,6 +176,14 @@ namespace ReadteR
                 }
             }
         }
+
+        /// <summary>
+        ///     Функция, генерирующая новый текст. Текс ограничен 140 символами, так как это твит, так же он находится весь в 
+        ///     нижнем регистре, кроме первого символа, чтобы было больше похоже на осмысленное приложение. 
+        /// </summary>
+        /// <returns>
+        ///     Сгенерированный твит.
+        /// </returns>
         public string Output()
         {
             string output = "";
@@ -160,6 +220,9 @@ namespace ReadteR
                 if (output.Length > 140)
                     break;
             } while (!w.End);
+
+            output = output.ToLower();
+            output = FirstLetterToUpper(output);
 
             Console.WriteLine("output_end = {0}\n", output);
             return output;

@@ -4,9 +4,11 @@ using System.Windows.Forms;
 // REST API
 using Tweetinvi;
 using Tweetinvi.Models;
-using Tweetinvi.Parameters;
 
 
+/// <summary>
+///     Пространство имён приложения.
+/// </summary>
 namespace ReadteR
 {
     static class Program

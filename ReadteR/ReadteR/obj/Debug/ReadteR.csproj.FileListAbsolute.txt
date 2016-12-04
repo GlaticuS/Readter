@@ -23,3 +23,4 @@ D:\Visual Studio\ReadteR\ReadteR\obj\Debug\ReadteR.csproj.GenerateResource.Cache
 D:\Visual Studio\ReadteR\ReadteR\obj\Debug\ReadteR.exe
 D:\Visual Studio\ReadteR\ReadteR\obj\Debug\ReadteR.pdb
 D:\Visual Studio\Readter\ReadteR\obj\Debug\ReadteR.GeneralWindow.resources
+D:\Visual Studio\Readter\ReadteR\bin\Debug\ReadteR.XML

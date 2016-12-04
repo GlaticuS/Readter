@@ -1,35 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // REST API
 using Tweetinvi;
 using Tweetinvi.Models;
-using Tweetinvi.Parameters;
-
-// STREAM API
-using Tweetinvi.Streaming;
-using Stream = Tweetinvi.Stream;
-
-// Others
-using Tweetinvi.Exceptions; // Handle Exceptions
-using Tweetinvi.Core.Extensions; // Extension methods provided by Tweetinvi
-using Tweetinvi.Models.DTO; // Data Transfer Objects for Serialization
-using Tweetinvi.Json; // JSON static classes to get json from Twitter.
 
 
 namespace ReadteR
 {
+    /// <summary>
+    /// Класс для основного окна приложения, именно здесь и осуществляется большая часть функционала. 
+    /// Первое поле отображает ленту твитов пользователя, поле посередине - новостную ленту, основанную на подписках
+    /// пользователя, крайнее поле нужно для генерации твитов.
+    /// </summary>
     public partial class GeneralWindow : Form
     {
         public IAuthenticatedUser authenticatedUser;
         public string homeTimeLine = "";
+        /// <summary>
+        ///         Функция для обработки данных пользователя, пришедших из окна логина. Конструктор класса.
+        ///     <para>
+        ///         Сначала происходит определение пользователя по его учётным данным, инициализируется окно и заполняется поле
+        ///         с именем пользователя.
+        ///     </para>
+        ///     <para>
+        ///         Определяется таймер (сейчас 30 секунд), с этой частотой окно приложения будет обновляться, отображая
+        ///         изменения в ленте пользователя.
+        ///     </para>
+        /// </summary>
+        /// <param name="userCredentials"> Учётные данные пользователя, получаемые в окне логина.</param>
         public GeneralWindow(ITwitterCredentials userCredentials)
         {
             if (userCredentials != null)
@@ -37,14 +36,15 @@ namespace ReadteR
                 authenticatedUser = User.GetAuthenticatedUser(userCredentials);
             }
             else
+            {
                 Close();
-            
+            }
+
             InitializeComponent();
-            userName.Text = authenticatedUser.ScreenName;
+            userName.Text = authenticatedUser.Name;
 
               EventArgs e = null;
             //заполнить формы лентой пользователя и профилем пользователя
-            //var tweet = Tweet.PublishTweet("Hello!");
             getTimelines(this, e);
 
             Timer1.Interval = 30000;
@@ -53,6 +53,20 @@ namespace ReadteR
            
         }
 
+        /// <summary>
+        ///     Обработчик события - функция для отображения новостной ленты и ленты твитов пользователя.
+        ///     <para>
+        ///         Порядок отображения:
+        ///         <list type="string">
+        ///         Не отображаются ретвиты;
+        ///         В ленте новостей не отображаются твиты пользователя;
+        ///         Твиты разделены между собой пустыми строками, содержат ссылки на контент.
+        ///         </list>
+        ///     </para>
+        ///     
+        /// </summary>
+        /// <param name="sender">Отправитель события</param>
+        /// <param name="e">Событие, в данном случае - тик таймера.</param>
         private void getTimelines(object sender, EventArgs e)
         {
             var newsTweets = Timeline.GetHomeTimeline();
@@ -67,32 +81,60 @@ namespace ReadteR
              * Вся лента пользователя. Тут же производится и сбор текста для последующей его "очистки"
              * и генерации твита.
              */
-            foreach (var tweet in newsTweets)       
+            if(newsTweets != null && userTweets != null)
             {
-                if(!tweet.IsRetweet)        //Не обрабатываем ретвиты
+                foreach (var tweet in newsTweets)       
                 {
- 
-                    newsBox.AppendText(tweet.Text + "\n\n");
-                   // Console.WriteLine(tweet.Text + "\n");
-                    homeTimeLine += tweet.Text + "\n";
+                    if(!tweet.IsRetweet && (tweet.CreatedBy.ToString() != authenticatedUser.ToString()))        //Не обрабатываем ретвиты
+                    {
+                        newsBox.AppendText(tweet.Text + "\n\n");
+                        homeTimeLine += tweet.Text + "\n";
+                    }
+                }
+
+                foreach (var tweet in userTweets)       //Просто отображение твитов пользователя
+                {
+                    if (!tweet.IsRetweet)
+                    {
+                        tweetBox.AppendText(tweet.Text + "\n\n");
+                    }          
                 }
             }
-
-            foreach (var tweet in userTweets)       //Просто отображение твитов пользователя
-            {
-                if (!tweet.IsRetweet)
-                {
-                    tweetBox.AppendText(tweet.Text + "\n\n");
-                }          
-            }
-            //Console.WriteLine(homeTimeLine);
         }
 
+        /// <summary>
+        /// Экземпляр класса <c>MarkovChain</c> для генерации твита.
+        /// </summary>
         MarkovChain markovChain = new MarkovChain();
+
+        /// <summary>
+        /// Переменная для сгенерированного твита.
+        /// </summary>
+        string output;
+
+        /// <summary>
+        ///     Действие при нажатии на кнопку <c>Сгенерировать!</c>
+        ///     <para>
+        ///         Загружаем для последующей обработки новостную ленту пользователя.
+        ///         Затем получаем выходные данные и постим их в текстбоксе.
+        ///     </para>
+        /// </summary>
         private void generateButton_Click(object sender, EventArgs e)
         {
             markovChain.Load(homeTimeLine);             //Загружаем в марковскую цепь наш список твитов
             generationBox.Text = markovChain.Output();  //получаем выходные данные и постим их
+            output = markovChain.Output();
+        }
+
+        /// <summary>
+        ///     Действие при нажатии на кнопку <c>Твитнуть!</c>
+        ///     <para>
+        ///         Публикуем твит в веб-профиле залогинившегося пользователя.
+        ///     </para>
+        /// </summary>
+        private void tweetButton_Click(object sender, EventArgs e)
+        {
+            var tweet = Tweet.PublishTweet(output);
         }
     }
 }

@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // REST API
 using Tweetinvi;
 using Tweetinvi.Models;
-using Tweetinvi.Parameters;
 
 namespace ReadteR
 {
+    /// <summary>
+    /// Класс для входа в приложение через свой аккаунт в Твиттере.
+    /// </summary>
     public partial class LoginForm : Form
     {
-        const string CONSUMER_KEY = "3feLvf1UVIf9mWbGK1fPuJ4kS";
-        const string CONSUMER_SECRET = "XAhlpKVGwy5Ql7KRIx2TUDXZ8nZfX46gV5xbZGpZ1HnFpzPmzA";
-        const string ACCESS_TOKEN = "701407404-FqEYE8BVx3JWqk45p6daYznhJPHoeoerPW4HPs5h";
-        const string ACCESS_TOKEN_SECRET = "6IEaNqxFlPdaz2LJdYeZPbktd76nUQpAHF8qia8wlL8da";
+        /// <summary>
+        /// Уникальный код, получаемый через браузер для входа в приложение.
+        /// </summary>
         public string pinCode;
 
         public IAuthenticationContext authenticationContext { get; private set; }
         public ITwitterCredentials userCredentials;
 
+        /// <summary>
+        /// Конструктор класса. Инициализирует данные приложения и заходит в бразер на вкладку с аутентификацией.
+        /// </summary>
         public LoginForm()
         {
+            Secret secrets = new Secret();
             InitializeComponent();
             // Create a new set of credentials for the application.
-            var appCredentials = new TwitterCredentials(CONSUMER_KEY, CONSUMER_SECRET);
+            var appCredentials = new TwitterCredentials(secrets.CONSUMER_KEY, secrets.CONSUMER_SECRET);
 
             // Init the authentication process and store the related `AuthenticationContext`.
             authenticationContext = AuthFlow.InitAuthentication(appCredentials);
@@ -44,6 +42,12 @@ namespace ReadteR
         {
         }
 
+        /// <summary>
+        /// При нажатии на кнопку "Войти!" данные из текстового поля передаются на проверку системе
+        /// аутентификации Твиттера. Если пинкод верен, переходим в окно приложения.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void loginButton_Click(object sender, EventArgs e)
         {
             pinCode = PINBox.Text;
@@ -54,7 +58,6 @@ namespace ReadteR
             // Use the user credentials in your application
             Auth.SetCredentials(userCredentials);
 
-           // Hide();
             GeneralWindow nextWindow = new GeneralWindow(userCredentials);
             nextWindow.Show();
         }
