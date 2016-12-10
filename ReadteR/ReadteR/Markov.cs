@@ -97,9 +97,6 @@ namespace ReadteR
                 Regex.Replace(piece, @"[^\u0000-\u007F]+", string.Empty);
             }
 
-           // for(int i = 0; i < s.Length; i++)
-           //     Console.WriteLine("all string: {0}\n", s[i]);
-
             string s1 = "";
             bool NextisStart = false;
             for (int i = 0; i < s.Length; i++)
@@ -186,6 +183,10 @@ namespace ReadteR
         /// </returns>
         public string Output()
         {
+            if(startindex.Count == 0)
+            {
+                return "";
+            }
             string output = "";
             Random r = new Random(Environment.TickCount + startindex.Count + 1);
             Structs.RootWord w = (Structs.RootWord)Words[((string)startindex[r.Next(startindex.Count)]).ToLower()];

@@ -1,69 +1,73 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using ReadteR;
 
 namespace ReadterTest
 {
-    /// <summary>
-    /// Сводное описание для MarkovTest
-    /// </summary>
+    /* Класс тестов реализации алгоритма Марковских цепей, модифицированного под задачи приложения. */
     [TestClass]
     public class MarkovTest
     {
-        public MarkovTest()
-        {
-            //
-            // TODO: добавьте здесь логику конструктора
-            //
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Получает или устанавливает контекст теста, в котором предоставляются
-        ///сведения о текущем тестовом запуске и обеспечивается его функциональность.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Дополнительные атрибуты тестирования
-        //
-        // При написании тестов можно использовать следующие дополнительные атрибуты:
-        //
-        // ClassInitialize используется для выполнения кода до запуска первого теста в классе
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // ClassCleanup используется для выполнения кода после завершения работы всех тестов в классе
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // TestInitialize используется для выполнения кода перед запуском каждого теста 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // TestCleanup используется для выполнения кода после завершения каждого теста
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
+        // Даём на вход пустую строку.
         [TestMethod]
-        public void TestMethod1()
+        public void EmptyString()
         {
-            //
-            // TODO: добавьте здесь логику теста
-            //
+            MarkovChain markovChain = new MarkovChain();
+            markovChain.Load("");
+            string output = markovChain.Output();
+     
+            Assert.AreEqual("", output);
+        }
+
+        // Проверка метода, который возводит первую букву строки в верхний регистр.
+        [TestMethod]
+        public void LetterUppering()
+        {
+            string lowerCaseString = "hello world";
+            MarkovChain markovChain = new MarkovChain();
+            string actual = markovChain.FirstLetterToUpper(lowerCaseString);
+
+            Assert.AreEqual("Hello world", actual);
+        }
+
+        // При вводе маленького текста получаем такую же строку на выходе.
+        [TestMethod]
+        public void LittleTextTest()
+        {
+            string testText = "Hello, my beautiful world!";
+            MarkovChain markovChain = new MarkovChain();
+            markovChain.Load(testText);
+            string output = markovChain.Output();
+
+            bool contains = false;
+            if(output.Contains("Hello, my beautiful world!"))
+            {
+                contains = true;
+            }
+
+            Assert.AreEqual(true, contains);
+        }
+
+        // Твиттер ограничивает размер твита 140 символами. Проверяется генерация текста длиной не более 140 символов.
+        [TestMethod]
+        public void TweetSizeTest()
+        {
+            string testText = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                               Duis id leo magna. Vestibulum eget accumsan ipsum, eget tristique leo.
+                               Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                               Pellentesque et elementum elit. Sed pulvinar egestas mauris.";
+            MarkovChain markovChain = new MarkovChain();
+            markovChain.Load(testText);
+            string output = markovChain.Output();
+
+            bool size = false;
+            if(output.Length <= 140)
+            {
+                size = true;
+            }
+
+            Assert.AreEqual(true, size);
         }
     }
 }

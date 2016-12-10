@@ -89,11 +89,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="GeneralWindowTest.cs" />
-    <Compile Include="LoginTest.cs" />
-    <Compile Include="MarkovTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="TweetinviTest.cs" />
+    <Compile Include="MarkovTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReadteR\ReadteR.csproj">
