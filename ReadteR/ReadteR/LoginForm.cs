@@ -54,13 +54,13 @@ namespace ReadteR
 
             // With this pin code it is now possible to get the credentials back from Twitter                
             userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(pinCode, authenticationContext);
-
+            
             // Use the user credentials in your application
             Auth.SetCredentials(userCredentials);
 
             GeneralWindow nextWindow = new GeneralWindow(userCredentials);
-            nextWindow.Show();
+            nextWindow.Show(this);
+            Hide();
         }
-
     }
 }

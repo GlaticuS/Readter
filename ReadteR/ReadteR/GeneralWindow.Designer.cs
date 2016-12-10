@@ -63,7 +63,7 @@
             this.news.AutoSize = true;
             this.news.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.news.ForeColor = System.Drawing.Color.SteelBlue;
-            this.news.Location = new System.Drawing.Point(345, 0);
+            this.news.Location = new System.Drawing.Point(344, 0);
             this.news.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.news.Name = "news";
             this.news.Size = new System.Drawing.Size(252, 32);
@@ -75,12 +75,12 @@
             this.generationPanel.AutoSize = true;
             this.generationPanel.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.generationPanel.ForeColor = System.Drawing.Color.SteelBlue;
-            this.generationPanel.Location = new System.Drawing.Point(694, 0);
+            this.generationPanel.Location = new System.Drawing.Point(693, 0);
             this.generationPanel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.generationPanel.Name = "generationPanel";
-            this.generationPanel.Size = new System.Drawing.Size(295, 32);
+            this.generationPanel.Size = new System.Drawing.Size(287, 32);
             this.generationPanel.TabIndex = 5;
-            this.generationPanel.Text = "Сгенерировать твит!";
+            this.generationPanel.Text = "Сгенерировать твит";
             // 
             // tableLayoutPanel1
             // 
@@ -105,6 +105,7 @@
             this.newsBox.Location = new System.Drawing.Point(349, 3);
             this.newsBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.newsBox.Name = "newsBox";
+            this.newsBox.ReadOnly = true;
             this.newsBox.Size = new System.Drawing.Size(333, 427);
             this.newsBox.TabIndex = 9;
             this.newsBox.Text = "";
@@ -115,6 +116,7 @@
             this.tweetBox.Location = new System.Drawing.Point(4, 3);
             this.tweetBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tweetBox.Name = "tweetBox";
+            this.tweetBox.ReadOnly = true;
             this.tweetBox.Size = new System.Drawing.Size(333, 427);
             this.tweetBox.TabIndex = 8;
             this.tweetBox.Text = "";
@@ -142,6 +144,7 @@
             this.generationBox.Location = new System.Drawing.Point(4, 3);
             this.generationBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.generationBox.Name = "generationBox";
+            this.generationBox.ReadOnly = true;
             this.generationBox.Size = new System.Drawing.Size(329, 334);
             this.generationBox.TabIndex = 0;
             this.generationBox.Text = "";
@@ -155,7 +158,7 @@
             this.tweetButton.Name = "tweetButton";
             this.tweetButton.Size = new System.Drawing.Size(329, 37);
             this.tweetButton.TabIndex = 1;
-            this.tweetButton.Text = "Твитнуть!";
+            this.tweetButton.Text = "Твитнуть";
             this.tweetButton.UseVisualStyleBackColor = true;
             this.tweetButton.Click += new System.EventHandler(this.tweetButton_Click);
             // 
@@ -168,7 +171,7 @@
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(329, 35);
             this.generateButton.TabIndex = 2;
-            this.generateButton.Text = "Сгенерировать!";
+            this.generateButton.Text = "Сгенерировать";
             this.generateButton.UseVisualStyleBackColor = true;
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
@@ -177,7 +180,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.40577F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.59423F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 342F));
             this.tableLayoutPanel2.Controls.Add(this.news, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.userName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.generationPanel, 2, 0);
@@ -202,6 +205,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "GeneralWindow";
             this.Text = "ReadteR";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GeneralWindow_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

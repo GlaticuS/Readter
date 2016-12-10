@@ -3,10 +3,15 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using ReadteR;
+// REST API
+using Tweetinvi;
+using Tweetinvi.Models;
+
 namespace ReadterTest
 {
     /// <summary>
-    /// Сводное описание для GeneralWindowTest
+    /// <c>GeneralWindowTest</c> будет проверять, правильно ли загружаются элементы в текстовых полях окна
     /// </summary>
     [TestClass]
     public class GeneralWindowTest
@@ -35,7 +40,15 @@ namespace ReadterTest
                 testContextInstance = value;
             }
         }
-
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            Secret secrets = new Secret();
+            //Auth.SetUserCredentials(secrets.CONSUMER_KEY, secrets.CONSUMER_SECRET, secrets.ACCESS_TOKEN, secrets.ACCESS_TOKEN_SECRET);
+            ITwitterCredentials testCredentials = new TwitterCredentials(secrets.CONSUMER_KEY, secrets.CONSUMER_SECRET, secrets.ACCESS_TOKEN, secrets.ACCESS_TOKEN_SECRET);
+            GeneralWindow nextWindow = new GeneralWindow(testCredentials);
+            //var authenticatedUser = User.GetAuthenticatedUser();
+        }
         #region Дополнительные атрибуты тестирования
         //
         // При написании тестов можно использовать следующие дополнительные атрибуты:
@@ -59,11 +72,9 @@ namespace ReadterTest
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void GetUserName()
         {
-            //
-            // TODO: добавьте здесь логику теста
-            //
+            GeneralWindow nextWindow = new GeneralWindow(testCredentials);
         }
     }
 }

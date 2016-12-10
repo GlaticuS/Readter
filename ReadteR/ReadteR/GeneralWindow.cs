@@ -136,5 +136,10 @@ namespace ReadteR
         {
             var tweet = Tweet.PublishTweet(output);
         }
+
+        private void GeneralWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
